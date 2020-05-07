@@ -1,0 +1,25 @@
+name: Build CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: build dir
+      run: mkdir build
+    - name: cmake
+      run: cmake -G"Visual Studio 16 2019" ..
+      working-directory: build
+    - name: setup msbuild
+      uses: microsoft/setup-msbuild@v1.0.0
+    - name: build
+      run: msbuild CMake.sln /property:Configuration=Release
+      working-directory: build
